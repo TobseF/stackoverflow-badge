@@ -31,18 +31,14 @@ function parse(json) {
             if (err) {
                 return console.log(err);
             }
-            if(typeof data  === 'string'){
-                let compiled = compileTemplate(data, reputation, bronze, silver, gold)
+            let compiled = compileTemplate(data, reputation, bronze, silver, gold)
 
-                fs.writeFile("./" + outputFile, compiled, err => {
-                    if (err) {
-                        console.error(err);
-                    }
-                    console.log("file written successfully");
-                });
-            }else  {
-                return console.log("No file data: "+data);
-            }
+            fs.writeFile("./" + outputFile, compiled, err => {
+                if (err) {
+                    console.error(err);
+                }
+                console.log("file written successfully");
+            });
         });
     }
 }
