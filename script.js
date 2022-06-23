@@ -6,7 +6,7 @@ let userName = "Tobse"
 
 let templateFile = 'banner-template.svg'
 let outputFile = 'banner.svg'
-let url = "https://api.stackexchange.com/2.3/users/"+userID+"?order=desc&sort=reputation&site=stackoverflow"
+let url = "https://api.stackexchange.com/2.3/users/" + userID + "?order=desc&sort=reputation&site=stackoverflow"
 
 fetch(url, {
     method: 'get',
@@ -27,13 +27,13 @@ function parse(json) {
         let gold = json.badge_counts.gold;
         console.log(reputation + "," + bronze + "," + silver + "," + gold);
 
-        fs.readFile(templateFile, 'utf8', function (err,data) {
+        fs.readFile("./" + templateFile, 'utf8', function (err, data) {
             if (err) {
                 return console.log(err);
             }
             let compiled = compileTemplate(data, reputation, bronze, silver, gold)
 
-            fs.writeFile(outputFile, compiled, err => {
+            fs.writeFile("./" + outputFile, compiled, err => {
                 if (err) {
                     console.error(err);
                 }
@@ -43,7 +43,7 @@ function parse(json) {
     }
 }
 
-function compileTemplate(template, reputation, bronze, silver, gold){
+function compileTemplate(template, reputation, bronze, silver, gold) {
     return template.replaceAll("${reputation}", reputation)
         .replaceAll("${bronze}", bronze)
         .replaceAll("${silver}", silver)
