@@ -6,7 +6,7 @@ steps:
   - uses: actions/setup-node@v3
     with:
       node-version: 14
-  - run: npm script.js
+  - run: node ./script.js
   - name: Commit files
     run: |
      git config --local user.email "gihub-bot.tobse.eu"
@@ -17,3 +17,8 @@ steps:
     with:
      github_token: ${{ secrets.GITHUB_TOKEN }}
      branch: ${{ github.ref }}
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight
