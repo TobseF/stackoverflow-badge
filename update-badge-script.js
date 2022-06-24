@@ -47,7 +47,7 @@ function setUpdateBannerEnv(value) {
 }
 
 function setEnv(key, value) {
-    console.log("::set-env name=" + key + "::" + value);
+    fs.writeFileSync(process.env.GITHUB_ENV, key + "=" + value);
 }
 
 function parseJson(json) {
