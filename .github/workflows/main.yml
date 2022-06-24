@@ -1,4 +1,4 @@
-name: Update banner
+name: Update stackoverflow badge
 on:
   push:
   pull_request:
@@ -6,7 +6,7 @@ on:
     - cron: '0 0 * * *'  # every day at midnight
 
 jobs:
-  update-banner:
+  update-badge:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,14 +16,21 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 15
+      - name: Run update script
       - run: npm ci
-      - run: node ./script.js
+      - run: node ./update-badge-script.js
+
+  commit-files:
+    if: ${{steps.update-badge.outputs.updateBadge}} == 'true'
+    runs-on: ubuntu-latest
+    needs: update-badge
+    steps:
       - name: Commit files
         run: |
          git config --local user.email "gihub-bot.tobse.eu"
          git config --local user.name "github-james"
-         git add banner.svg
-         git commit -m "Add changes" -a
+         git add stackoverflow-badge.svg
+         git commit -m "🤖 Update Badge" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
