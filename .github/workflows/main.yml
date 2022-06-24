@@ -20,7 +20,7 @@ jobs:
       - run: node ./update-badge-script.js
 
   commit-files:
-    if: ${{steps.update-badge.outputs.updateBadge}} == 'true'
+    if: steps.update-badge.outputs.updateBadge == 'true'
     runs-on: ubuntu-latest
     needs: update-badge
     steps:
