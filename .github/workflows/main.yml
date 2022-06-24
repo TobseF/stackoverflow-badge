@@ -16,7 +16,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 15
-      - name: Run update script
       - run: npm ci
       - run: node ./update-badge-script.js
 
