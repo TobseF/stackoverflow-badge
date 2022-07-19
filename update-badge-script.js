@@ -21,33 +21,33 @@ fetch(getUserURL, {
 function updateBadge(json) {
     try {
         let badgeData = parseJson(json);
-        let templateData = readFile( templateFile);
+        let templateData = readFile(templateFile);
         let compiledBadge = compileTemplate(templateData, badgeData);
         let oldBadge = readFile(outputFile);
 
         if (userName !== badgeData.username) {
             console.error("Reviewed wrong username from API: " + badgeData.username);
-            setUpdateBannerEnv("false")
+            setUpdateBannerOutput("false")
         } else if (oldBadge === compiledBadge) {
             console.log("Badge data has not changed. Skipping commit.");
-            setUpdateBannerEnv("false")
+            setUpdateBannerOutput("false")
         } else {
             console.log("Updating badge ...");
             fs.writeFileSync("./" + outputFile, compiledBadge);
             console.log("Updated " + outputFile + " successfully");
-            setUpdateBannerEnv("true")
+            setUpdateBannerOutput("true")
         }
     } catch (error) {
         console.error(error);
     }
 }
 
-function setUpdateBannerEnv(value) {
-    setEnv("update-badge", value)
+function setUpdateBannerOutput(value) {
+    setOutput("update-badge", value)
 }
 
-function setEnv(key, value) {
-    fs.writeFileSync(process.env.GITHUB_ENV, key + "=" + value);
+function setOutput(key, value) {
+    console.log("::set-output name=" + key + "::" + value);
 }
 
 function parseJson(json) {
@@ -71,7 +71,7 @@ class BadgeData {
 }
 
 function readFile(file) {
-    return fs.readFileSync("./" +file, 'utf8')
+    return fs.readFileSync("./" + file, 'utf8')
 }
 
 function compileTemplate(template, badgeData) {
