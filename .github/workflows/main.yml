@@ -8,8 +8,6 @@ on:
 jobs:
   update-badge:
     runs-on: ubuntu-latest
-    outputs:
-      update-badge: ${{ steps.update-badge.outputs.update-badge }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -21,19 +19,15 @@ jobs:
       - run: npm ci
       - id: update-badge
         run: node ./update-badge-script.js
-
-  commit-files:
-    if: needs.update-badge.outputs.update-badge == 'true'
-    runs-on: ubuntu-latest
-    needs: update-badge
-    steps:
       - name: Commit files
+        if: env.update-badge == 'true'
         run: |
          git config --local user.email "gihub-bot.tobse.eu"
          git config --local user.name "github-james"
          git add stackoverflow-badge.svg
          git commit -m "🤖 Update Badge" -a
       - name: Push changes
+        if: env.update-badge == 'true'
         uses: ad-m/github-push-action@master
         with:
          github_token: ${{ secrets.GITHUB_TOKEN }}

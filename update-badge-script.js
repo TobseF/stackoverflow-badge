@@ -27,27 +27,27 @@ function updateBadge(json) {
 
         if (userName !== badgeData.username) {
             console.error("Reviewed wrong username from API: " + badgeData.username);
-            setUpdateBannerOutput("false")
+            setUpdateBannerEnv("false")
         } else if (oldBadge === compiledBadge) {
             console.log("Badge data has not changed. Skipping commit.");
-            setUpdateBannerOutput("false")
+            setUpdateBannerEnv("false")
         } else {
             console.log("Updating badge ...");
             fs.writeFileSync("./" + outputFile, compiledBadge);
             console.log("Updated " + outputFile + " successfully");
-            setUpdateBannerOutput("true")
+            setUpdateBannerEnv("true")
         }
     } catch (error) {
         console.error(error);
     }
 }
 
-function setUpdateBannerOutput(value) {
-    setOutput("update-badge", value)
+function setUpdateBannerEnv(value) {
+    setEnv("update-badge", value)
 }
 
-function setOutput(key, value) {
-    console.log("::set-output name=" + key + "::" + value);
+function setEnv(key, value) {
+    fs.writeFileSync(process.env.GITHUB_ENV, key + "=" + value);
 }
 
 function parseJson(json) {
