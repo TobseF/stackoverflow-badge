@@ -43,7 +43,7 @@ function updateBadge(json) {
 }
 
 function setUpdateBannerEnv(value) {
-    setEnv("updateBadge", value)
+    setEnv("update-badge", value)
 }
 
 function setEnv(key, value) {
